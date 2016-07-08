@@ -1,4 +1,17 @@
+import re
+
 from enum import Enum
+from urllib.parse import urlparse
+
+# Header for a Bro Intel file
+_HEADER = '\t'.join([
+		'#fields',
+		'indicator',
+		'indicator_type',
+		'meta.source',
+		'meta.url',
+		'meta.do_notice\n'
+	])
 
 class IndicatorType(Enum):
 	ADDR = 'ADDR'
@@ -25,21 +38,30 @@ class DoNotice(Enum):
 		return '{0}'.format(self._name_)
 
 class Document:
+	'''Type to be used to create individual Bro Intel documents.
 
+	When converted to a string, this document creates a Bro Intel file line.
+	'''
 	def __init__(self, indicator, indicator_type, source=None, url=None, do_notice=False):
 
-		self.indicator = indicator
 		self.indicator_type = indicator_type
+		self.indicator = indicator
 		self.source = source
 		self.url = url
-		self.do_notice = do_noticek
+		self.do_notice = do_notice
 
 	@property
 	def indicator(self):
+		'''A hash, file name, ip address, etc. for Bro to look for.'''
 		return self._indicator
 	
 	@indicator.setter
 	def indicator(self, indicator):
+		# Automatically remove the scheme, since Bro doesn't want that
+		if self.indicator_type == IndicatorType.URL:
+			url = urlparse(indicator)
+			indicator = url.geturl().replace('{0}://'.format(url.scheme), '')
+
 		self._indicator = indicator
 
 	@property
