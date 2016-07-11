@@ -1,6 +1,7 @@
 import re
 
 from enum import Enum
+from ipaddress import ip_address
 from urllib.parse import urlparse
 
 # Header for a Bro Intel file
@@ -10,7 +11,7 @@ _HEADER = '\t'.join([
 		'indicator_type',
 		'meta.source',
 		'meta.url',
-		'meta.do_notice\n'
+		'meta.do_notice'
 	])
 
 class IndicatorType(Enum):
@@ -57,6 +58,11 @@ class Document:
 	
 	@indicator.setter
 	def indicator(self, indicator):
+
+		# Validate IP Address indicator types
+		if self.indicator_type == IndicatorType.ADDR:
+			ip = ip_address(indicator)
+
 		# Automatically remove the scheme, since Bro doesn't want that
 		if self.indicator_type == IndicatorType.URL:
 			url = urlparse(indicator)
@@ -117,3 +123,11 @@ class Document:
 				str(self.do_notice)]
 
 		return '\t'.join(fields)
+
+def bro_print(documents, fpath=None):
+
+	documents = set(documents)
+	print(_HEADER, file=None)
+	for document in documents:
+		if type(document) == Document:
+			print(document)
