@@ -1,13 +1,8 @@
-from __future__ import print_function
-
 import re
 
 from enum import Enum
 from ipaddress import ip_address
-try:
-	from urllib.parse import urlparse
-except ImportError:
-	from urlparse import urlparse
+from urllib.parse import urlparse
 
 # Header for a Bro Intel file
 _HEADER = '\t'.join([
