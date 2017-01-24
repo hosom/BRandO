@@ -9,5 +9,5 @@ setup(name='brawndo',
 	author_email='0xhosom@gmail.com',
 	url='https://github.com/hosom/brawndo',
 	packages=['brawndo'],
-	install_requires=[],
+	install_requires=['enum', 'ipaddress'],
 	)
