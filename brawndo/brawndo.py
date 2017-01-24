@@ -25,7 +25,7 @@ class IndicatorType(Enum):
 	ADDR = 'ADDR'
 	URL = 'URL'
 	SOFTWARE = 'SOFTWARE'
-	EMAIl = 'EMAIL'
+	EMAIL = 'EMAIL'
 	DOMAIN = 'DOMAIN'
 	USER_NAME = 'USER_NAME'
 	FILE_HASH = 'FILE_HASH'
